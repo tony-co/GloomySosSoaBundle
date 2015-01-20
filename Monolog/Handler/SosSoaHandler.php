@@ -21,10 +21,12 @@ class SosSoaHandler extends AbstractProcessingHandler
     protected function write(array $record)
     {
         $path = '';
+        $channel = '';
         if ($request = $this->requestStack->getMasterRequest()) {
             $path = $request->attributes->get('_sossoa_path', '');
+            $channel = $request->attributes->get('_sossoa_channel', '');
         }
 
-        $this->client->push($path, $record['message'], strtolower($record['level_name']), $record['context']);
+        $this->client->push($path, $channel, $record['message'], strtolower($record['level_name']), $record['context']);
     }
 }

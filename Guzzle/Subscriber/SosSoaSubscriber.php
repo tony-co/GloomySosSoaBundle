@@ -34,5 +34,9 @@ class SosSoaSubscriber implements SubscriberInterface
         } else {
             $event->getRequest()->setHeader('X-SOSSOA-PATH', '/'.uniqid());
         }
+
+        if ($channel = $sfRequest->attributes->get('_sossoa_channel')) {
+            $event->getRequest()->setHeader('X-SOSSOA-CHANNEL', $channel);
+        }
     }
 }

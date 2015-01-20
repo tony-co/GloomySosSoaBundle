@@ -27,9 +27,11 @@ class SosSoaRequestListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
         $parent = $request->headers->get('X-SOSSOA-PATH', '');
+        $channel = $request->headers->get('X-SOSSOA-CHANNEL', '');
 
-        $path = $this->client->push($parent, sprintf('New master request "%s" (%s)', $request->getPathInfo(), $request->getMethod()), 'primary', $this->getContext($request));
+        $path = $this->client->push($parent, $channel, sprintf('New master request "%s" (%s)', $request->getPathInfo(), $request->getMethod()), 'primary', $this->getContext($request));
         $request->attributes->set('_sossoa_path', $path);
+        $request->attributes->set('_sossoa_channel', $channel);
     }
 
     protected function getContext(Request $request)

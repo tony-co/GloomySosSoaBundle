@@ -18,24 +18,25 @@ class SosSoaClient
         $this->port = $port;
     }
 
-    public function push($path, $message, $level = 'info', array $context = [])
+    public function push($path, $channel, $message, $level = 'info', array $context = [])
     {
         $path .= '/'.uniqid();
 
         try {
-            $this->write($this->generateData($path, $message, $level, $context));
+            $this->write($this->generateData($path, $channel, $message, $level, $context));
         } catch (\Exception $e) {
         }
 
         return $path;
     }
 
-    protected function generateData($path, $message, $level, $context)
+    protected function generateData($path, $channel, $message, $level, $context)
     {
         $content = json_encode([
             'application' => $this->application,
             'path' => $path,
             'message' => $message,
+            'channel' => $channel,
             'context' => $context,
             'level' => $level,
             'date' => time(),
